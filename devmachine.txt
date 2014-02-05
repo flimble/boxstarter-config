@@ -13,6 +13,7 @@ try {
   	#endregion
 
   	#region move personal content to dropbox directory
+  	cinst dropbox
   	$dropbox_dir = Get-DropBox
   	Move-LibraryDirectory "Downloads" "$dropbox_dir\Downloads"  -DoNotMoveOldContent
   	Move-LibraryDirectory "My Music" "$dropbox_dir\Music" -DoNotMoveOldContent
