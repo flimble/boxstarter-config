@@ -6,11 +6,20 @@ function Get-DropBox() {
 
 try {
 
+
 	  #windows settings  	
   	Set-ExplorerOptions -showFileExtensions
   	Enable-RemoteDesktop
   	Disable-UAC
+
+    #enable use of local chocolatey cache
+    $cachePath = C:\ChocolateyCachedInstallers
+    if(!(Test-Path -Path $cachePath)){
+      New-Item -ItemType directory -Path $cachePath
+    }
+    $env:ChocolateyLocalCachePath = $cachePath
   	
+
 
   	#move personal content to dropbox directory. removed as need to set the location on install
   	#cinst dropbox
