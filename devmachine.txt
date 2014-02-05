@@ -13,7 +13,7 @@ try {
   	Disable-UAC
 
     #enable use of local chocolatey cache
-    $cachePath = C:\ChocolateyCachedInstallers
+    $cachePath = 'C:\ChocolateyCachedInstallers'
     if(!(Test-Path -Path $cachePath)){
       New-Item -ItemType directory -Path $cachePath
     }
