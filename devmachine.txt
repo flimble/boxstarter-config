@@ -36,7 +36,7 @@ try {
   	
 
   	#install latest visual studio and service pack if necessary
-  	cinst VisualStudio2012Professional -InstallArguments "WebTools SQL"
+  	cinst VisualStudio2012Professional
 
     if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
         if(Test-PendingReboot){Invoke-Reboot}
