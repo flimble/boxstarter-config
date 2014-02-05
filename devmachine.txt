@@ -36,10 +36,10 @@ try {
   	
 
   	#install latest visual studio and service pack if necessary
-  	cinst VisualStudio2012Professional
+  	cinst VisualStudio2012Professional -InstallArguments "WebTools"
 
     if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
-        if(Test-PendingReboot){Invoke-Reboot}
+        if(Test-PendingReboot){Invoke-Reboot
         Install-ChocolateyPackage 'vs update 4' 'exe' '/passive /norestart' 'http://download.microsoft.com/download/D/4/8/D48D1AC2-A297-4C9E-A9D0-A218E6609F06/VSU4/VS2012.4.exe'
     }
 
