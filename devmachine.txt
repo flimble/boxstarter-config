@@ -6,55 +6,59 @@ function Get-DropBox() {
 
 try {
 
-	#region  	
+	  #windows settings  	
   	Set-ExplorerOptions -showFileExtensions
   	Enable-RemoteDesktop
   	Disable-UAC
-  	#endregion
+  	
 
-  	#region move personal content to dropbox directory
-  	cinst dropbox
-  	$dropbox_dir = Get-DropBox
-  	Move-LibraryDirectory "Downloads" "$dropbox_dir\Downloads"  -DoNotMoveOldContent
-  	Move-LibraryDirectory "My Music" "$dropbox_dir\Music" -DoNotMoveOldContent
-  	Move-LibraryDirectory "My Pictures" "$dropbox_dir\Pictures" -DoNotMoveOldContent
-  	Move-LibraryDirectory "My Video" "$dropbox_dir\Media" -DoNotMoveOldContent
-  	#endregion
+  	#move personal content to dropbox directory. removed as need to set the location on install
+  	#cinst dropbox
+  	#$dropbox_dir = Get-DropBox
+  	#Move-LibraryDirectory "Downloads" "$dropbox_dir\Downloads"  -DoNotMoveOldContent
+  	#Move-LibraryDirectory "My Music" "$dropbox_dir\Music" -DoNotMoveOldContent
+  	#Move-LibraryDirectory "My Pictures" "$dropbox_dir\Pictures" -DoNotMoveOldContent
+  	#Move-LibraryDirectory "My Video" "$dropbox_dir\Media" -DoNotMoveOldContent
+  	
 
-  	#region add taskbar shortcuts
+  	#add taskbar shortcuts
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\mstsc.exe"
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\WindowsPowerShell\v1.0\powershell.exe"
-  	#endregion
+  	
 
   	#install latest visual studio and service pack if necessary
   	cinst VisualStudio2012Professional 
+
+    # get rid of upper case menu in Visual Studio
+    Set-ItemProperty -Path HKCU:\Software\Microsoft\VisualStudio\11.0\General -Name SuppressUppercaseConversion -Type DWord -Value 1 
+ 
+
 
     if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
         if(Test-PendingReboot){Invoke-Reboot}
         Install-ChocolateyPackage 'vs update 4' 'exe' '/passive /norestart' 'http://download.microsoft.com/download/D/4/8/D48D1AC2-A297-4C9E-A9D0-A218E6609F06/VSU4/VS2012.4.exe'
     }
-    #endregion
+    
 
-    #region install visual studio tools
+    #install visual studio tools
     if(Test-PendingReboot){Invoke-Reboot}
-	Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
-	cinst resharper -version 7.1.3000.2254
-	#endregion
+	  Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
+	  cinst resharper -version 7.1.3000.2254
 
 		
 
-    #region install windows features
+    #install windows features
     cinst IIS-WebServerRole -source windowsfeatures
     cinst TelnetClient -source windowsFeatures
-    #endregion
+    
 
-    #region leave the chocolatey packages to my default packages.config
+    #leave the chocolatey packages to my default packages.config
   	$client = New-Object system.net.WebClient;
   	$client.DownloadFile("https://raw.github.com/flimble/chocolatey-config/master/packages.config","packages.config");
   	cinst packages.config
-	#endregion
+	
 
-	Install-WindowsUpdate -AcceptEula
+	  Install-WindowsUpdate -AcceptEula
 
     Write-ChocolateySuccess 'DevMachine.Repave'
 
