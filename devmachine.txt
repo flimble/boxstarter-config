@@ -26,21 +26,22 @@ try {
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\WindowsPowerShell\v1.0\powershell.exe"
   	#endregion
 
-  	#install latest visual studio
+  	#install latest visual studio and service pack if necessary
   	cinst VisualStudio2012Professional 
 
     if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
         if(Test-PendingReboot){Invoke-Reboot}
-
-        #region install all necessary visual studio updates
         Install-ChocolateyPackage 'vs update 4' 'exe' '/passive /norestart' 'http://download.microsoft.com/download/D/4/8/D48D1AC2-A297-4C9E-A9D0-A218E6609F06/VSU4/VS2012.4.exe'
-        if(Test-PendingReboot){Invoke-Reboot}
-		Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
-		#endregion
-
-		cinst resharper -version 7.1.3000.2254
-
     }
+    #endregion
+
+    #region install visual studio tools
+    if(Test-PendingReboot){Invoke-Reboot}
+	Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
+	cinst resharper -version 7.1.3000.2254
+	#endregion
+
+		
 
     #region install windows features
     cinst IIS-WebServerRole -source windowsfeatures

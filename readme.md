@@ -1,0 +1,1 @@
+START http://boxstarter.org/package/url?https://raw.github.com/flimble/boxstarter-config/master/devmachine.txt
