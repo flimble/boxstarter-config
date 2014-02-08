@@ -6,6 +6,8 @@ function Get-DropBox() {
 
 try {
 
+    cinst DotNet4.5
+    Install-ChocolateyPackage 'vs2012' 'exe' '/adminfile z:\Data\VSInstall\AdminDeployment.xml /quiet /norestart' 'z:\Data\VSInstall\vs_professional.exe'
 
 	  #windows settings  	
   	Set-ExplorerOptions -showFileExtensions
@@ -36,7 +38,10 @@ try {
   	
 
   	#install latest visual studio and service pack if necessary
-  	cinst VisualStudio2012Professional
+  	#cinst VisualStudio2012Professional
+
+
+    #Install-ChocolateyPackage 'vs2012' 'exe' '/adminfile AdminDeployment.xml /quiet /norestart' 'path'
 
     if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
         if(Test-PendingReboot){Invoke-Reboot}
@@ -51,6 +56,7 @@ try {
     if(Test-PendingReboot){Invoke-Reboot}
 	  Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
 	  cinst resharper -version 7.1.3000.2254
+    cinst dotCover
 
 		
 
