@@ -46,7 +46,7 @@ try {
     if((Test-Path $devenvPath) -eq $false) {
       Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
       
-      $vsargs = "/Quiet /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log"
+      $vsargs = "/Passive /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log"
 
       Start-ChocolateyProcessAsAdmin -statements $vsargs -exeToRun $vsinstaller
       
