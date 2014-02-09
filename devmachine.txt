@@ -26,18 +26,22 @@ function Write-PendingReboot() {
 try {
 
 
-    #cinst DotNet4.5
-    #Reboot-IfRequired
+    cinst DotNet4.5
+    Reboot-IfRequired
 
     #visual studio 2012 professional
-    $vsadminFile = 'z:\data\VSInstall\AdminDeployment.xml'
+    
     $vsinstaller = 'z:\data\VSInstall\vs_professional.exe'
+
+    $client = New-Object system.net.WebClient;
+    $client.DownloadFile("https://raw.github.com/flimble/boxstarter-config/master/vsstudio2012admindeployment.xml","admindeployment.xml");
+    $vsadminFile = 'admindeployment.xml'
 
     $devenvPath = "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe"
     if((Test-Path $devenvPath) -eq $false) {
       Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
       
-      &$vsinstaller /Passive /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log
+      & $vsinstaller /Passive /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log
       Reboot-IfRequired
     }
     else { 
