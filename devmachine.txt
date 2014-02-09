@@ -23,7 +23,7 @@ function Write-PendingReboot() {
   }
 }
 
-function Install-VisualStudio2012($vsinstaller[string]) { 
+function Install-VisualStudio2012([string]$vsinstaller) { 
     cinst DotNet4.5
     Reboot-IfRequired
 
@@ -62,7 +62,7 @@ function Install-VisualStudio2012($vsinstaller[string]) {
 }
 
 
- function Install-SqlServer2012($sqlinstaller[string]) {
+ function Install-SqlServer2012([string]$sqlinstaller) {
     #sql server develop edition
     $sqlinstances = (get-itemproperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server').InstalledInstances
     if($instances.count -gt 0) {
