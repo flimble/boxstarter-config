@@ -39,8 +39,8 @@ try {
 
 
     $client = New-Object system.net.WebClient;
-    $client.DownloadFile("https://raw.github.com/flimble/boxstarter-config/master/vsstudio2012admindeployment.xml","admindeployment.xml");
-    $vsadminFile = 'admindeployment.xml'
+    $client.DownloadFile("https://raw.github.com/flimble/boxstarter-config/master/vsstudio2012admindeployment.xml","$env:temp\admindeployment.xml");
+    $vsadminFile = "$env:temp\admindeployment.xml"
 
     $devenvPath = "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe"
     if((Test-Path $devenvPath) -eq $false) {
