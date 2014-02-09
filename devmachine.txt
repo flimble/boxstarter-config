@@ -4,13 +4,28 @@ function Get-DropBox() {
   [System.Text.Encoding]::UTF8.GetString($encodedPath)
 }
 
+function Write-PendingReboot() { 
+  if(Test-PendingReboot) {
+    Write-Host "BoxStarter Reboot is pending"
+  }
+  else {
+    Write-Host "No Reboot pending"
+  }
+}
+
 try {
 
+    
+    Write-PendingReboot
     cinst DotNet4.5
+
+    Write-PendingReboot
 
     #visual studio 2012 professional
     $adminFile = '\\vmware=host\Shared Folders\Data\VSInstall\AdminDeployment.xml'
     Install-ChocolateyPackage 'vs2012' 'exe' "/Passive /NoRestart /AdminFile $adminFile /Log $env:temp\vs.log" '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
+
+    Write-PendingReboot
 
     #sql server develop edition
     #$adminsGroupName = (New-Object Security.Principal.SecurityIdentifier 'S-1-5-32-544').Translate([Security.Principal.NTAccount]).Value 
@@ -18,8 +33,11 @@ try {
 
 	  #windows settings  	
   	Set-ExplorerOptions -showFileExtensions
+    Write-PendingReboot
   	Enable-RemoteDesktop
+    Write-PendingReboot
   	Disable-UAC
+    Write-PendingReboot
 
     #enable use of local chocolatey cache
     #$cachePath = 'C:\ChocolateyCachedInstallers'
@@ -41,8 +59,9 @@ try {
 
   	#add taskbar shortcuts
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\mstsc.exe"
+    Write-PendingReboot
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\WindowsPowerShell\v1.0\powershell.exe"
-  	
+  	Write-PendingReboot
 
   	#install latest visual studio and service pack if necessary
   	#cinst VisualStudio2012Professional
@@ -53,32 +72,39 @@ try {
     if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
         #if(Test-PendingReboot){Invoke-Reboot}
         Install-ChocolateyPackage 'vs update 4' 'exe' '/passive /norestart' 'http://download.microsoft.com/download/D/4/8/D48D1AC2-A297-4C9E-A9D0-A218E6609F06/VSU4/VS2012.4.exe'
+        Write-PendingReboot
     }
 
     # get rid of upper case menu in Visual Studio
     Set-ItemProperty -Path HKCU:\Software\Microsoft\VisualStudio\11.0\General -Name SuppressUppercaseConversion -Type DWord -Value 1 
-    
+    Write-PendingReboot
 
     #install visual studio tools
     #if(Test-PendingReboot){Invoke-Reboot}
 	  Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
+    Write-PendingReboot
 	  cinst resharper -version 7.1.3000.2254
+    Write-PendingReboot
     cinst dotCover
 
 		
 
     #install windows features
     cinst IIS-WebServerRole -source windowsfeatures
+    Write-PendingReboot
     cinst TelnetClient -source windowsFeatures
+    Write-PendingReboot
     
 
     #leave the chocolatey packages to my default packages.config
   	$client = New-Object system.net.WebClient;
   	$client.DownloadFile("https://raw.github.com/flimble/chocolatey-config/master/packages.config","packages.config");
   	cinst packages.config
+    Write-PendingReboot
 	
 
 	  Install-WindowsUpdate -AcceptEula
+    Write-PendingReboot
 
     Write-ChocolateySuccess 'DevMachine.Repave'
 
