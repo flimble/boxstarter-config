@@ -7,7 +7,9 @@ function Get-DropBox() {
 try {
 
     cinst DotNet4.5
-    Install-ChocolateyPackage 'vs2012' 'exe' '/adminfile \\vmware-host\Shared Folders\Data\VSInstall\AdminDeployment.xml /quiet /norestart' '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
+
+    $adminFile = '\\vmware=host\Shared Folders\Data\VSInstall\AdminDeployment.xml'
+    Install-ChocolateyPackage 'vs2012' 'exe' '/Passive /NoRestart /AdminFile $adminFile /Log $env:temp\vs.log' '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
 
 	  #windows settings  	
   	Set-ExplorerOptions -showFileExtensions
