@@ -24,7 +24,7 @@ try {
     Write-PendingReboot
 
     #visual studio 2012 professional
-    $devenvPath = "($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe"
+    $devenvPath = "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe"
     if((Test-Path $devenvPath) -eq $false) {
       Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
       $adminFile = '\\vmware=host\Shared Folders\Data\VSInstall\AdminDeployment.xml'
