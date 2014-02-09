@@ -25,15 +25,19 @@ function Write-PendingReboot() {
 
 try {
 
-    cinst DotNet4.5
-    Reboot-IfRequired
+
+    #cinst DotNet4.5
+    #Reboot-IfRequired
 
     #visual studio 2012 professional
+    $vsadminFile = 'z:\data\VSInstall\AdminDeployment.xml'
+    $vsinstaller = 'z:\data\VSInstall\vs_professional.exe'
+
     $devenvPath = "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe"
     if((Test-Path $devenvPath) -eq $false) {
       Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
-      $adminFile = 'z:\Data\VSInstall\AdminDeployment.xml'
-      Install-ChocolateyPackage 'vs2012' 'exe' "/Passive /NoRestart /AdminFile $adminFile /Log $env:temp\vs.log" 'z:\Data\VSInstall\vs_professional.exe'
+      
+      &$vsinstaller /Passive /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log
       Reboot-IfRequired
     }
     else { 
