@@ -48,24 +48,8 @@ try {
       
       $vsargs = "/Quiet /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log"
 
-      $validExitCodes = @(0)
-
-      $psi = new-object System.Diagnostics.ProcessStartInfo;
-      $psi.FileName = $vsinstaller;
-      $psi.Arguments = $vsargs;
-      $psi.Verb = 'runas'
-
-      $s = [System.Diagnostics.Process]::Start($psi);
-      $s.WaitForExit();
-      if ($validExitCodes -notcontains $s.ExitCode) {
-        $errorMessage = "[ERROR] Running $exeToRun with $statements was not successful. Exit code was `'$($s.ExitCode)`'."
-        Write-Error $errorMessage
-        throw $errorMessage
-      }
-
-
+      Start-ChocolateyProcessAsAdmin -statements $vsargs -exeToRun $vsinstaller
       
-      $exitCode = start-process -FilePath $vsinstaller -ArgumentList $vsargs -Wait
       
       Reboot-IfRequired
     }
