@@ -8,8 +8,13 @@ try {
 
     cinst DotNet4.5
 
+    #visual studio 2012 professional
     $adminFile = '\\vmware=host\Shared Folders\Data\VSInstall\AdminDeployment.xml'
     Install-ChocolateyPackage 'vs2012' 'exe' "/Passive /NoRestart /AdminFile $adminFile /Log $env:temp\vs.log" '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
+
+    #sql server develop edition
+    #$adminsGroupName = (New-Object Security.Principal.SecurityIdentifier 'S-1-5-32-544').Translate([Security.Principal.NTAccount]).Value 
+    #Install-ChocolateyPackage 'SqlServer2012' 'exe' "/q /INDICATEPROGRESS /ACTION=Install /FEATURES=SQL,Tools /TCPENABLED=1 /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT=`"NT #AUTHORITY\Network Service`" /SQLSYSADMINACCOUNTS=`"$adminsGroupName`" /AGTSVCACCOUNT=`"NT AUTHORITY\Network Service`" /IACCEPTSQLSERVERLICENSETERMS " 'http://download.#microsoft.com/download/5/2/9/529FEF7B-2EFB-439E-A2D1-A1533227CD69/SQLEXPRWT_x86_ENU.exe'
 
 	  #windows settings  	
   	Set-ExplorerOptions -showFileExtensions
@@ -46,7 +51,7 @@ try {
     #Install-ChocolateyPackage 'vs2012' 'exe' '/adminfile AdminDeployment.xml /quiet /norestart' 'path'
 
     if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
-        if(Test-PendingReboot){Invoke-Reboot}
+        #if(Test-PendingReboot){Invoke-Reboot}
         Install-ChocolateyPackage 'vs update 4' 'exe' '/passive /norestart' 'http://download.microsoft.com/download/D/4/8/D48D1AC2-A297-4C9E-A9D0-A218E6609F06/VSU4/VS2012.4.exe'
     }
 
@@ -55,7 +60,7 @@ try {
     
 
     #install visual studio tools
-    if(Test-PendingReboot){Invoke-Reboot}
+    #if(Test-PendingReboot){Invoke-Reboot}
 	  Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
 	  cinst resharper -version 7.1.3000.2254
     cinst dotCover
