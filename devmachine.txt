@@ -15,7 +15,9 @@ function Write-PendingReboot() {
 
 try {
 
-    
+    Write-PendingReboot
+    cinst powershell4
+
     Write-PendingReboot
     cinst DotNet4.5
 
