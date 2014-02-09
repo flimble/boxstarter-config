@@ -23,19 +23,9 @@ function Write-PendingReboot() {
   }
 }
 
-try {
-    #windows settings   
-    Set-ExplorerOptions -showFileExtensions
-    Enable-RemoteDesktop
-    Disable-UAC
-    Reboot-IfRequired
-
+function Install-VisualStudio2012($vsinstaller[string]) { 
     cinst DotNet4.5
     Reboot-IfRequired
-
-    #visual studio 2012 professional
-    $vsinstaller = 'C:\TempInstallers\VSInstall\vs_professional.exe'
-    $sqlinstaller = 'C:\TempInstallers\sqlserver2012\setup.exe'
 
 
     $client = New-Object system.net.WebClient;
@@ -56,6 +46,23 @@ try {
       Write-Host "VS2012 already installed as devenv.exe found on path $devenvPath"
     }
 
+    if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
+      Install-ChocolateyPackage 'vs update 4' 'exe' '/passive /norestart' 'http://download.microsoft.com/download/D/4/8/D48D1AC2-A297-4C9E-A9D0-A218E6609F06/VSU4/VS2012.4.exe'
+      Reboot-IfRequired
+    }
+
+    # get rid of upper case menu in Visual Studio
+    Set-ItemProperty -Path HKCU:\Software\Microsoft\VisualStudio\11.0\General -Name SuppressUppercaseConversion -Type DWord -Value 1 
+
+    #install visual studio tools
+    Reboot-IfRequired
+    Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
+    cinst resharper -version 7.1.3000.2254
+    cinst dotCover
+}
+
+
+ function Install-SqlServer2012($sqlinstaller[string]) {
     #sql server develop edition
     $sqlinstances = (get-itemproperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server').InstalledInstances
     if($instances.count -gt 0) {
@@ -71,7 +78,22 @@ try {
 
       Reboot-IfRequired
     }
+  }
 
+
+try {
+    #windows settings   
+    Set-ExplorerOptions -showFileExtensions
+    Enable-RemoteDesktop
+    Disable-UAC
+    Reboot-IfRequired
+
+    Install-VisualStudio2012 'C:\TempInstallers\VSInstall\vs_professional.exe'
+
+    Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
+
+
+   
 
 
     #enable use of local chocolatey cache
@@ -95,22 +117,6 @@ try {
   	#add taskbar shortcuts
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\mstsc.exe"
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\WindowsPowerShell\v1.0\powershell.exe"
-
-
-
-    if((Get-Item "$($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe").VersionInfo.ProductVersion -lt "11.0.60115.1") {
-        Install-ChocolateyPackage 'vs update 4' 'exe' '/passive /norestart' 'http://download.microsoft.com/download/D/4/8/D48D1AC2-A297-4C9E-A9D0-A218E6609F06/VSU4/VS2012.4.exe'
-        Reboot-IfRequired
-    }
-
-    # get rid of upper case menu in Visual Studio
-    Set-ItemProperty -Path HKCU:\Software\Microsoft\VisualStudio\11.0\General -Name SuppressUppercaseConversion -Type DWord -Value 1 
-
-    #install visual studio tools
-    Reboot-IfRequired
-	  Install-ChocolateyVsixPackage nugettools http://visualstudiogallery.msdn.microsoft.com/27077b70-9dad-4c64-adcf-c7cf6bc9970c/file/37502/36/NuGet.Tools.vsix
-	  cinst resharper -version 7.1.3000.2254
-    cinst dotCover
 
 		
 
