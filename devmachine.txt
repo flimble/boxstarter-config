@@ -51,7 +51,7 @@ try {
       $validExitCodes = @(0)
 
       $psi = new-object System.Diagnostics.ProcessStartInfo;
-      $psi.FileName = $exeToRun;
+      $psi.FileName = $vsinstaller;
       $psi.Arguments = $vsargs;
       $psi.Verb = 'runas'
 
