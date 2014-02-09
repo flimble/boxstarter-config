@@ -24,14 +24,18 @@ function Write-PendingReboot() {
 }
 
 try {
-
+    #windows settings   
+    Set-ExplorerOptions -showFileExtensions
+    Enable-RemoteDesktop
+    Disable-UAC
+    Reboot-IfRequired
 
     cinst DotNet4.5
     Reboot-IfRequired
 
     #visual studio 2012 professional
-    $vsinstaller = 'z:\data\VSInstall\vs_professional.exe'
-    $sqlinstaller = 'z:\data\sqlserver2012\setup.exe'
+    $vsinstaller = '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
+    $sqlinstaller = '\\vmware-host\Shared Folders\Data\sqlserver2012\setup.exe'
 
 
     $client = New-Object system.net.WebClient;
@@ -42,7 +46,9 @@ try {
     if((Test-Path $devenvPath) -eq $false) {
       Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
       
-      & $vsinstaller /Passive /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log
+      $vsargs = "/Passive /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log"
+      $exitCode = start-process $vsinstaller $vsargs -PassThrough -Wait
+      
       Reboot-IfRequired
     }
     else { 
@@ -60,11 +66,7 @@ try {
     #& $sqlinstaller /q /INDICATEPROGRESS /ACTION=Install /FEATURES=SQL,Tools /TCPENABLED=1 /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT="NT AUTHORITY\Network Service" #/SQLSYSADMINACCOUNTS="$adminsGroupName" /AGTSVCACCOUNT="NT AUTHORITY\Network Service" /IACCEPTSQLSERVERLICENSETERMS 
     }
 
-	  #windows settings  	
-  	Set-ExplorerOptions -showFileExtensions
-  	Enable-RemoteDesktop
-  	Disable-UAC
-    Reboot-IfRequired
+
 
     #enable use of local chocolatey cache
     #$cachePath = 'C:\ChocolateyCachedInstallers'
