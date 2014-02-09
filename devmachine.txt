@@ -34,8 +34,8 @@ try {
     Reboot-IfRequired
 
     #visual studio 2012 professional
-    $vsinstaller = 'Z:\Data\VSInstall\vs_professional.exe'
-    $sqlinstaller = 'Z:\Data\sqlserver2012\setup.exe'
+    $vsinstaller = 'C:\TempInstallers\VSInstall\vs_professional.exe'
+    $sqlinstaller = 'C:\TempInstallers\sqlserver2012\setup.exe'
 
 
     $client = New-Object system.net.WebClient;
