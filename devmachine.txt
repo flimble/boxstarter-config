@@ -51,8 +51,8 @@ function Install-VisualStudio2012([string]$vsinstaller) {
       Reboot-IfRequired
     }
 
-    # get rid of upper case menu in Visual Studio
-    Set-ItemProperty -Path HKCU:\Software\Microsoft\VisualStudio\11.0\General -Name SuppressUppercaseConversion -Type DWord -Value 1 
+    # get rid of upper case menu in Visual Studio. Only Available AFTER first time visual studio has been opened.
+    #Set-ItemProperty -Path HKCU:\Software\Microsoft\VisualStudio\11.0\General -Name SuppressUppercaseConversion -Type DWord -Value 1 
 
     #install visual studio tools
     Reboot-IfRequired
@@ -74,7 +74,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
       $sqlargs = "/q /INDICATEPROGRESS /ACTION=Install /FEATURES=SQL,Tools /TCPENABLED=1 /INSTANCENAME=MSSQLSERVER /SQLSVCACCOUNT=`"NT AUTHORITY\Network Service`" /SQLSYSADMINACCOUNTS=`"$adminsGroupName`" /AGTSVCACCOUNT=`"NT AUTHORITY\Network Service`" /IACCEPTSQLSERVERLICENSETERMS"
 
       
-      #Start-ChocolateyProcessAsAdmin -statements $sqlargs -exeToRun $sqlinstaller
+      Start-ChocolateyProcessAsAdmin -statements $sqlargs -exeToRun $sqlinstaller
 
       Reboot-IfRequired
     }
