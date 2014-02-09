@@ -47,7 +47,7 @@ try {
       Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
       
       $vsargs = "/Passive /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log"
-      $exitCode = start-process $vsinstaller $vsargs -PassThrough -Wait
+      $exitCode = start-process -FilePath $vsinstaller -ArgumentList $vsargs -Wait
       
       Reboot-IfRequired
     }
