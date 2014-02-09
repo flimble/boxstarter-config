@@ -24,8 +24,9 @@ try {
     Write-PendingReboot
 
     #visual studio 2012 professional
-    if((Test-Path "($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe") -eq $false) {
-      Write-Host "Installing Visual Studio 2012 as it is not already on path"
+    $devenvPath = "($Boxstarter.programFiles86)\Microsoft Visual Studio 11.0\Common7\IDE\devenv.exe"
+    if((Test-Path $devenvPath) -eq $false) {
+      Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
       $adminFile = '\\vmware=host\Shared Folders\Data\VSInstall\AdminDeployment.xml'
       Install-ChocolateyPackage 'vs2012' 'exe' "/Passive /NoRestart /AdminFile $adminFile /Log $env:temp\vs.log" '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
       Write-PendingReboot
