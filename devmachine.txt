@@ -48,7 +48,7 @@ try {
       
       $vsargs = "/Quiet /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log"
 
-      $validExitCodes = 0
+      $validExitCodes = @(0)
 
       $psi = new-object System.Diagnostics.ProcessStartInfo;
       $psi.FileName = $exeToRun;
