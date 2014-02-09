@@ -47,7 +47,24 @@ try {
       Write-Host "Installing Visual Studio 2012 as it is not already on path $devenvPath"
       
       $vsargs = "/Quiet /NoRestart /AdminFile $vsadminFile /Log $env:temp\vs.log"
-      update-executionpolicy 'Bypass'
+
+      $validExitCodes = 0
+
+      $psi = new-object System.Diagnostics.ProcessStartInfo;
+      $psi.FileName = $exeToRun;
+      $psi.Arguments = $vsargs;
+      $psi.Verb = 'runas'
+
+      $s = [System.Diagnostics.Process]::Start($psi);
+      $s.WaitForExit();
+      if ($validExitCodes -notcontains $s.ExitCode) {
+        $errorMessage = "[ERROR] Running $exeToRun with $statements was not successful. Exit code was `'$($s.ExitCode)`'."
+        Write-Error $errorMessage
+        throw $errorMessage
+      }
+
+
+      
       $exitCode = start-process -FilePath $vsinstaller -ArgumentList $vsargs -Wait
       
       Reboot-IfRequired
