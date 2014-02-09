@@ -1,8 +1,4 @@
-function Get-DropBox() {
-  $hostFile = Join-Path (Split-Path (Get-ItemProperty HKCU:\Software\Dropbox).InstallPath) "host.db"
-  $encodedPath = [System.Convert]::FromBase64String((Get-Content $hostFile)[1])
-  [System.Text.Encoding]::UTF8.GetString($encodedPath)
-}
+
 
 function Reboot-IfRequired() { 
   if(Test-PendingReboot){ 
@@ -51,8 +47,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
       Reboot-IfRequired
     }
 
-    # get rid of upper case menu in Visual Studio. Only Available AFTER first time visual studio has been opened.
-    #Set-ItemProperty -Path HKCU:\Software\Microsoft\VisualStudio\11.0\General -Name SuppressUppercaseConversion -Type DWord -Value 1 
+
 
     #install visual studio tools
     Reboot-IfRequired
@@ -64,8 +59,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 
  function Install-SqlServer2012([string]$sqlinstaller) {
     #sql server develop edition
-    $sqlinstances = (get-itemproperty 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server').InstalledInstances
-    if($instances.count -gt 0) {
+    if (Get-Service "MSSQLSERVER" -ErrorAction SilentlyContinue) {
       Write-Host "SQL Server 2012 already installed"
     }
     else {
@@ -88,8 +82,7 @@ try {
     Disable-UAC
     Reboot-IfRequired
 
-    Install-VisualStudio2012 'C:\TempInstallers\VSInstall\vs_professional.exe'
-
+    Install-VisualStudio2012 'C:\TempInstallers\visualstudio2012\vs_professional.exe'
     Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
 
 
@@ -104,15 +97,6 @@ try {
     #$env:ChocolateyLocalCachePath = $cachePath
   	
 
-
-  	#move personal content to dropbox directory. removed as need to set the location on install
-  	#cinst dropbox
-  	#$dropbox_dir = Get-DropBox
-  	#Move-LibraryDirectory "Downloads" "$dropbox_dir\Downloads"  -DoNotMoveOldContent
-  	#Move-LibraryDirectory "My Music" "$dropbox_dir\Music" -DoNotMoveOldContent
-  	#Move-LibraryDirectory "My Pictures" "$dropbox_dir\Pictures" -DoNotMoveOldContent
-  	#Move-LibraryDirectory "My Video" "$dropbox_dir\Media" -DoNotMoveOldContent
-  	
 
   	#add taskbar shortcuts
   	Install-ChocolateyPinnedTaskBarItem "$env:windir\system32\mstsc.exe"
