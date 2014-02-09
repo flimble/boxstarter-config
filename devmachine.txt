@@ -9,7 +9,7 @@ try {
     cinst DotNet4.5
 
     $adminFile = '\\vmware=host\Shared Folders\Data\VSInstall\AdminDeployment.xml'
-    Install-ChocolateyPackage 'vs2012' 'exe' '/Passive /NoRestart /AdminFile $adminFile /Log $env:temp\vs.log' '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
+    Install-ChocolateyPackage 'vs2012' 'exe' "/Passive /NoRestart /AdminFile $adminFile /Log $env:temp\vs.log" '\\vmware-host\Shared Folders\Data\VSInstall\vs_professional.exe'
 
 	  #windows settings  	
   	Set-ExplorerOptions -showFileExtensions
