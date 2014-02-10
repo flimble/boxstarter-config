@@ -74,19 +74,18 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     }
   }
 
-  function Install-Biztalk([string] $biztalkinstaller) {
+  function Install-Biztalk([string] $biztalkinstaller, [string] $cabpath, [string] $companyname) {
     if(Get-Item 'HKLM:\SOFTWARE\Microsoft\BizTalk Server\3.0' -ErrorAction SilentlyContinue) {
       Write-Host 'Biztalk 2013 already installed'
     }
     else { 
-      $companyname = 'SCA'
 
       Write-Host "Installing Biztalk Server 2013"
 
       $logfile = "$env:temp\biztalkinstall.log"
 
       $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013"
-      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /L `"$logfile`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"BizTalk`""
+      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /L `"$logfile`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"BizTalk`" /CABPATH"
 
       Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
     }
@@ -104,9 +103,9 @@ try {
     Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
 
     Install-ChocolateyPackage 'sqlxml4' 'msi' '/quiet' 'http://download.microsoft.com/download/9/1/C/91C88B06-0922-4272-8CC1-78E445BCC8AB/sqlxml_x64.msi'
-    Install-ChocolateyPackage 'adomdnet' 'msi' '/quiet' 'http://download.microsoft.com/download/9/a/5/9a55a68d-f247-47aa-9b77-1b206b95d709/ADOMD.NET.msi'
+    Install-ChocolateyPackage 'adomd9' 'msi' '/quiet' 'http://download.microsoft.com/download/4/4/d/44dbde61-b385-4fc2-a67d-48053b8f9fad/SQLServer2005_ADOMD_x64.msi'
     
-    Install-Biztalk 'D:\Biztalk Server\setup.exe' 'SCA'
+    Install-Biztalk 'D:\Biztalk Server\setup.exe' 'c:\tempInstallers\biztalkcabpath\BtsRedistWin8EN64.cab' 'SCA'
 
 
    
