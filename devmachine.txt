@@ -74,6 +74,22 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     }
   }
 
+  function Install-Biztalk([string] $biztalkinstaller) {
+    if((Get-Item 'HKLM:\SOFTWARE\Microsoft\BizTalk Server\3.0' -ErrorAction SilentlyContinue) {
+      Write-Host 'Biztalk 2013 already installed'
+    }
+    else { 
+    
+      Write-Host "Installing Biztalk Server 2013"
+
+      $installdir = "$($Boxstarter.programFiles)\Biztalk Server 2013"
+
+      $args = "/PASSIVE /INSTALLDIR `"$installdir`""
+
+      Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
+    }
+  }
+
 
 try {
     #windows settings   
@@ -84,6 +100,7 @@ try {
 
     Install-VisualStudio2012 'C:\TempInstallers\visualstudio2012\vs_professional.exe'
     Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
+    Install-Biztalk 'D:\Biztalk Server\setup.exe'
 
 
    
