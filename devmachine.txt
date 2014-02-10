@@ -85,7 +85,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
       $logfile = "$env:temp\biztalkinstall.log"
 
       $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013"
-      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /L `"$logfile`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"BizTalk`" /CABPATH"
+      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /L `"$logfile`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"MsEDIAS2,MsEDIAS2StatusReporting,WCFAdapter,WcfAdapterAdminTools,PAM,WMI,BizTalk,MOT,Engine,MSMQ,Runtime,RfidEventForwarderMessageTransform,AdminAndMonitoring,MonitoringAndTracking,AdminTools,BizTalkAdminSnapIn,HealthActivityClient,BAMTools `" /CABPATH"
 
       Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
     }
@@ -102,8 +102,8 @@ try {
     Install-VisualStudio2012 'C:\TempInstallers\visualstudio2012\vs_professional.exe'
     Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
 
-    Install-ChocolateyPackage 'sqlxml4' 'msi' '/quiet' 'http://download.microsoft.com/download/9/1/C/91C88B06-0922-4272-8CC1-78E445BCC8AB/sqlxml_x64.msi'
-    Install-ChocolateyPackage 'adomd9' 'msi' '/quiet' 'http://download.microsoft.com/download/4/4/d/44dbde61-b385-4fc2-a67d-48053b8f9fad/SQLServer2005_ADOMD_x64.msi'
+    #Install-ChocolateyPackage 'sqlxml4' 'msi' '/quiet' 'http://download.microsoft.com/download/9/1/C/91C88B06-0922-4272-8CC1-78E445BCC8AB/sqlxml_x64.msi'
+    #Install-ChocolateyPackage 'adomd9' 'msi' '/quiet' 'http://download.microsoft.com/download/4/4/d/44dbde61-b385-4fc2-a67d-48053b8f9fad/SQLServer2005_ADOMD_x64.msi'
     
     Install-Biztalk 'D:\Biztalk Server\setup.exe' 'c:\tempInstallers\biztalkcabpath\BtsRedistWin8EN64.cab' 'SCA'
 
