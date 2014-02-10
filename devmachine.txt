@@ -57,7 +57,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 }
 
 
- function Install-SqlServer2012([string]$sqlinstaller) {
+ function Install-SqlServer2012([string]$sqlinstaller, [string] $companyname) {
     #sql server develop edition
     if (Get-Service "MSSQLSERVER" -ErrorAction SilentlyContinue) {
       Write-Host "SQL Server 2012 already installed"
@@ -82,8 +82,8 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     
       Write-Host "Installing Biztalk Server 2013"
 
-      $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013\"
-      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /ADDLOCAL BizTalk,WMI,Runtime,Engine,MOT,HwsBaseAssemblies,MessageQueuing,MSMQ,HwsRunt"
+      $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013"
+      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"BizTalk,WMI,Runtime,Engine,MOT,HwsBaseAssemblies,MessageQueuing,MSMQ,HwsRunt`""
 
       Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
     }
@@ -99,7 +99,7 @@ try {
 
     Install-VisualStudio2012 'C:\TempInstallers\visualstudio2012\vs_professional.exe'
     Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
-    Install-Biztalk 'D:\Biztalk Server\setup.exe'
+    Install-Biztalk 'D:\Biztalk Server\setup.exe' 'SCA'
 
 
    
