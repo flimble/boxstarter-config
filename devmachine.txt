@@ -102,6 +102,8 @@ try {
 
     Install-VisualStudio2012 'C:\TempInstallers\visualstudio2012\vs_professional.exe'
     Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
+
+    Install-ChocolateyPackage 'sqlxml4' 'msi' '/quiet' 'http://download.microsoft.com/download/9/1/C/91C88B06-0922-4272-8CC1-78E445BCC8AB/sqlxml_x64.msi'
     Install-Biztalk 'D:\Biztalk Server\setup.exe' 'SCA'
 
 
