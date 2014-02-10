@@ -82,8 +82,10 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     
       Write-Host "Installing Biztalk Server 2013"
 
+      $logfile = "$env:temp\biztalkinstall.log"
+
       $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013"
-      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"BizTalk, WMI, Runtime, Engine, MOT, MSMQ`""
+      $args = "/PASSIVE /INSTALLDIR `"$installdir`" /L `"$logfile`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"BizTalk, WMI, Runtime, Engine, MOT, MSMQ`""
 
       Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
     }
