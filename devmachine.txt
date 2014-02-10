@@ -104,6 +104,8 @@ try {
     Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
 
     Install-ChocolateyPackage 'sqlxml4' 'msi' '/quiet' 'http://download.microsoft.com/download/9/1/C/91C88B06-0922-4272-8CC1-78E445BCC8AB/sqlxml_x64.msi'
+    Install-ChocolateyPackage 'adomdnet' 'msi' '/quiet' 'http://download.microsoft.com/download/9/a/5/9a55a68d-f247-47aa-9b77-1b206b95d709/ADOMD.NET.msi'
+    
     Install-Biztalk 'D:\Biztalk Server\setup.exe' 'SCA'
 
 
