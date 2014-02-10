@@ -75,7 +75,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
   }
 
   function Install-Biztalk([string] $biztalkinstaller) {
-    if((Get-Item 'HKLM:\SOFTWARE\Microsoft\BizTalk Server\3.0' -ErrorAction SilentlyContinue) {
+    if(Get-Item 'HKLM:\SOFTWARE\Microsoft\BizTalk Server\3.0' -ErrorAction SilentlyContinue) {
       Write-Host 'Biztalk 2013 already installed'
     }
     else { 
@@ -83,7 +83,6 @@ function Install-VisualStudio2012([string]$vsinstaller) {
       Write-Host "Installing Biztalk Server 2013"
 
       $installdir = "$($Boxstarter.programFiles)\Biztalk Server 2013"
-
       $args = "/PASSIVE /INSTALLDIR `"$installdir`""
 
       Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
