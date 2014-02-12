@@ -81,7 +81,6 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     else { 
 
       Write-Host "Installing Biztalk Server 2013"
-
       $logfile = "$env:temp\biztalkinstall.log"
 
       $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013"
@@ -89,6 +88,11 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 
       Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
     }
+  }
+
+  function Mount-DiskImageReturnDriveLetter($imagePath) { 
+    $volume = Mount-DiskImage "$imagePath" -PassThru
+    return ($volume | Get-Volume).DriveLetter
   }
 
 
@@ -99,14 +103,21 @@ try {
     Disable-UAC
     Reboot-IfRequired
 
-    Install-VisualStudio2012 'C:\TempInstallers\visualstudio2012\vs_professional.exe'
-    Install-SqlServer2012 'C:\TempInstallers\sqlserver2012\setup.exe'
+    $iso = 'C:\Installers\en_visual_studio_professional_2012_x86_dvd_2262334.iso'
+    $drive = Mount-DiskImageReturnDriveLetter $iso
+    Install-VisualStudio2012 "$drive:\vs_professional.exe"
+    Dismount-DiskImage $iso
 
-    #Install-ChocolateyPackage 'sqlxml4' 'msi' '/quiet' 'http://download.microsoft.com/download/9/1/C/91C88B06-0922-4272-8CC1-78E445BCC8AB/sqlxml_x64.msi'
-    #Install-ChocolateyPackage 'adomd9' 'msi' '/quiet' 'http://download.microsoft.com/download/4/4/d/44dbde61-b385-4fc2-a67d-48053b8f9fad/SQLServer2005_ADOMD_x64.msi'
-    
-    Install-Biztalk 'D:\Biztalk Server\setup.exe' 'c:\tempInstallers\biztalkcabpath\BtsRedistWin8EN64.cab' 'SCA'
 
+    $iso = 'C:\Installers\en_sql_server_2012_developer_edition_with_sp1_x64_dvd_1228540.iso'
+    $drive = Mount-DiskImageReturnDriveLetter $iso
+    Install-SqlServer2012 '$drive:\setup.exe'
+    Dismount-DiskImage $iso
+
+    $iso = 'C:\Installers\en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
+    $drive = Mount-DiskImageReturnDriveLetter $iso
+    Install-Biztalk '$drive:\Biztalk Server\setup.exe' 'c:\Installers\BtsRedistWin8EN64.cab' 'SCA'
+    Dismount-DiskImage $iso
 
    
 
