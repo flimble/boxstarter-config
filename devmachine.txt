@@ -96,6 +96,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
   }
 
 
+
 try {
     #windows settings   
     Set-ExplorerOptions -showFileExtensions
@@ -105,18 +106,18 @@ try {
 
     $iso = 'C:\Installers\en_visual_studio_professional_2012_x86_dvd_2262334.iso'
     $drive = Mount-DiskImageReturnDriveLetter $iso
-    Install-VisualStudio2012 "$drive:\vs_professional.exe"
+    Install-VisualStudio2012 "${drive}:\vs_professional.exe"
     Dismount-DiskImage $iso
 
 
     $iso = 'C:\Installers\en_sql_server_2012_developer_edition_with_sp1_x64_dvd_1228540.iso'
     $drive = Mount-DiskImageReturnDriveLetter $iso
-    Install-SqlServer2012 '$drive:\setup.exe'
+    Install-SqlServer2012 "${drive}:\setup.exe"
     Dismount-DiskImage $iso
 
     $iso = 'C:\Installers\en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
     $drive = Mount-DiskImageReturnDriveLetter $iso
-    Install-Biztalk '$drive:\Biztalk Server\setup.exe' 'c:\Installers\BtsRedistWin8EN64.cab' 'SCA'
+    Install-Biztalk "${drive}:\Biztalk Server\setup.exe" 'c:\Installers\BtsRedistWin8EN64.cab' 'SCA'
     Dismount-DiskImage $iso
 
    
