@@ -100,7 +100,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 try {
     #windows settings   
     Set-ExplorerOptions -showFileExtensions
-    Enable-RemoteDesktop
+    #Enable-RemoteDesktop
     Disable-UAC
     Reboot-IfRequired
 
