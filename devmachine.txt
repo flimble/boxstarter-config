@@ -104,8 +104,9 @@ try {
     Disable-UAC
     Reboot-IfRequired
 
+    $usbdrive = 'f:\'
 
-    $iso = 'C:\Installers\en_visual_studio_professional_2012_x86_dvd_2262334.iso'
+    $iso = join-path $usbdrive 'Installers\en_visual_studio_professional_2012_x86_dvd_2262334.iso'
     try {
       $drive = Mount-DiskImageReturnDriveLetter $iso
       Install-VisualStudio2012 "${drive}:\vs_professional.exe"
@@ -115,7 +116,7 @@ try {
     }
 
 
-    $iso = 'C:\Installers\en_sql_server_2012_developer_edition_with_sp1_x64_dvd_1228540.iso'
+    $iso = join-path $usbdrive 'Installers\en_sql_server_2012_developer_edition_with_sp1_x64_dvd_1228540.iso'
     try {
       $drive = Mount-DiskImageReturnDriveLetter $iso
       Install-SqlServer2012 "${drive}:\setup.exe"
@@ -125,10 +126,10 @@ try {
     }
 
 
-    $iso = 'C:\Installers\en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
+    $iso = $usbdrive 'Installers\en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
     try {
       $drive = Mount-DiskImageReturnDriveLetter $iso
-      Install-Biztalk "${drive}:\Biztalk Server\setup.exe" 'c:\Installers\BtsRedistWin8EN64.cab' 'SCA'
+      Install-Biztalk "${drive}:\Biztalk Server\setup.exe" (join-path $usbdrive 'Installers\BtsRedistWin8EN64.cab') 'SCA'
     }
     finally {
       Dismount-DiskImage $iso -ErrorAction SilentlyContinue
