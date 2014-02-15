@@ -91,6 +91,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
   }
 
   function Mount-DiskImageReturnDriveLetter($imagePath) { 
+    Write-Host "mounting iso at: $imagePath"
     $volume = Mount-DiskImage "$imagePath" -PassThru
     return ($volume | Get-Volume).DriveLetter
   }
