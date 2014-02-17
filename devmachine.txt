@@ -98,8 +98,10 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     
     $vcdmount = "$($Boxstarter.programFiles86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe"
 
-     Start-ChocolateyProcessAsAdmin -statements $imagePath -exeToRun $vcdmount
+     Start-ChocolateyProcessAsAdmin -statements "$imagePath" -exeToRun $vcdmount
   
+     Start-Sleep -m 100000
+
      return "e"
 
   }
@@ -108,7 +110,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 	    $vcdmount = "$($Boxstarter.programFiles86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe"
 
      	$args = '/u'
-	Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $vcdmount
+	Start-ChocolateyProcessAsAdmin -statements "$args" -exeToRun $vcdmount
      
   }
 
@@ -122,6 +124,8 @@ try {
     cinst VirtualCloneDrive
 
     $usbdrive = 'f:\software\iso'
+
+
 
     $iso = join-path $usbdrive 'en_visual_studio_professional_2012_x86_dvd_2262334.iso'
     try {
