@@ -98,7 +98,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     
     $vcdmount = "$($Boxstarter.programFiles86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe"
 
-     & $vcdmount $imagePath
+     & $vcdmount "$imagePath"
   
      return "d"
 
