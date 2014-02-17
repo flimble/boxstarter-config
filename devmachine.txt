@@ -104,6 +104,9 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 
      Start-ChocolateyProcessAsAdmin -statements `"$imagePath`" -exeToRun `"$vcdmount`"
 
+     write-host "waiting 10 seconds"
+     start-sleep -s 10000
+
      return "d"
 
   }
