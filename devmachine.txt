@@ -91,11 +91,24 @@ function Install-VisualStudio2012([string]$vsinstaller) {
   }
 
   function Mount-DiskImageReturnDriveLetter($imagePath) { 
+    
     Write-Host "mounting iso at: $imagePath"
-    $volume = Mount-DiskImage "$imagePath" -PassThru
-    return ($volume | Get-Volume).DriveLetter
+    #$volume = Mount-DiskImage "$imagePath" -PassThru
+    #return ($volume | Get-Volume).DriveLetter
+    
+    $vcdmount = "$($Boxstarter.programFiles86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe"
+
+     & $vcdmount $imagePath
+  
+     return "d"
+
   }
 
+  function Dismount-DiskImage($imagePath) {
+	    $vcdmount = "$($Boxstarter.programFiles86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe"
+
+     & $vcdmount /u
+  }
 
 
 try {
@@ -104,6 +117,7 @@ try {
     #Enable-RemoteDesktop
     Disable-UAC
     Reboot-IfRequired
+    cinst VirtualCloneDrive
 
     $usbdrive = 'f:\software\iso'
 
