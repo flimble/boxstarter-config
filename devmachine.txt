@@ -80,6 +80,10 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     }
     else { 
 
+      if(!(Test-Path $biztalkinstaller)) {
+          throw "path to $biztalkinstaller not found"
+	}
+
       Write-Host "Installing Biztalk Server 2013 using installer: $biztalkinstaller and cab: $cabpath with company name: $companyname"
       $logfile = "$env:temp\biztalkinstall.log"
 
