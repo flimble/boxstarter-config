@@ -150,14 +150,14 @@ try {
     }
 
 
-    $iso = join-path $usbdrive 'en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
-    try {
-      $drive = Mount-DiskImageReturnDriveLetter $iso
-      Install-Biztalk "${drive}:\Biztalk Server\setup.exe" (join-path $usbdrive 'BtsRedistWin8EN64.cab') 'SCA'
-    }
-    finally {
-      Dismount-DiskImage $iso -ErrorAction SilentlyContinue
-    }
+    #$iso = join-path $usbdrive 'en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
+    #try {
+    #  $drive = Mount-DiskImageReturnDriveLetter $iso
+    #  Install-Biztalk "${drive}:\Biztalk Server\setup.exe" (join-path $usbdrive 'BtsRedistWin8EN64.cab') 'SCA'
+    #}
+    #finally {
+    #  Dismount-DiskImage $iso -ErrorAction SilentlyContinue
+    #}
 
 
    
