@@ -86,7 +86,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
       $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013"
       $args = "/PASSIVE /INSTALLDIR `"$installdir`" /L `"$logfile`" /COMPANYNAME `"$companyname`" /ADDLOCAL `"MsEDIAS2,MsEDIAS2StatusReporting,WCFAdapter,WcfAdapterAdminTools,PAM,WMI,BizTalk,MOT,Engine,MSMQ,Runtime,RfidEventForwarderMessageTransform,AdminAndMonitoring,MonitoringAndTracking,AdminTools,BizTalkAdminSnapIn,HealthActivityClient,BAMTools`" /CABPATH `"$cabpath`""
 
-      Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $biztalkinstaller
+      Start-ChocolateyProcessAsAdmin -statements $args -exeToRun `"$biztalkinstaller`"
     }
   }
 
@@ -104,7 +104,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 
   }
 
-  function Dismount-DiskImage($imagePath) {
+  function Dismount-DiskImage2($imagePath) {
 
 
       try { 
