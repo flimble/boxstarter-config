@@ -80,7 +80,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     }
     else { 
 
-      Write-Host "Installing Biztalk Server 2013"
+      Write-Host "Installing Biztalk Server 2013 using installer: $biztalkinstaller and cab: $cabpath with company name: $companyname"
       $logfile = "$env:temp\biztalkinstall.log"
 
       $installdir = "$($Boxstarter.programFiles86)\Microsoft BizTalk Server 2013"
@@ -150,14 +150,15 @@ try {
     }
 
 
-    #$iso = join-path $usbdrive 'en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
-    #try {
-    #  $drive = Mount-DiskImageReturnDriveLetter $iso
-    #  Install-Biztalk "${drive}:\Biztalk Server\setup.exe" (join-path $usbdrive 'BtsRedistWin8EN64.cab') 'SCA'
-    #}
-    #finally {
-    #  Dismount-DiskImage $iso -ErrorAction SilentlyContinue
-    #}
+    $iso = join-path $usbdrive 'en_biztalk_server_2013_developer_edition_x86_x64_dvd_3192107.iso'
+    try {
+      $drive = Mount-DiskImageReturnDriveLetter $iso
+      $cab = (join-path $usbdrive 'BtsRedistWin7EN64.cab')
+      Install-Biztalk -biztalkinstaller "${drive}:\Biztalk Server\setup.exe" -cabpath $cab -companyname 'SCA'
+    }
+    finally {
+      Dismount-DiskImage $iso -ErrorAction SilentlyContinue
+    }
 
 
    
