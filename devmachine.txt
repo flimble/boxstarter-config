@@ -104,7 +104,7 @@ function Install-VisualStudio2012([string]$vsinstaller) {
 
   }
 
-  function Dismount-DiskImage2($imagePath) {
+  function Dismount-DiskImage($imagePath) {
 
 
       try { 
