@@ -98,16 +98,18 @@ function Install-VisualStudio2012([string]$vsinstaller) {
     
     $vcdmount = "$($Boxstarter.programFiles86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe"
 
-     & $vcdmount "$imagePath"
+     Start-ChocolateyProcessAsAdmin -statements $imagePath -exeToRun $vcdmount
   
-     return "d"
+     return "e"
 
   }
 
   function Dismount-DiskImage($imagePath) {
 	    $vcdmount = "$($Boxstarter.programFiles86)\Elaborate Bytes\VirtualCloneDrive\vcdmount.exe"
 
-     & $vcdmount /u
+     	$args = '/u'
+	Start-ChocolateyProcessAsAdmin -statements $args -exeToRun $vcdmount
+     
   }
 
 
