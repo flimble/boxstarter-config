@@ -135,7 +135,7 @@ try {
     Reboot-IfRequired
     cinst VirtualCloneDrive
 
-    $usbdrive = 'f:\software\iso'
+    $usbdrive = 'e:\software\iso'
 
 
 
