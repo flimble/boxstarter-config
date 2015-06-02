@@ -1,6 +1,6 @@
 # boxstarter-config
 
-## My dev machine repave scripts using boxstarter and chocolatey
+<b>My dev machine repave scripts using boxstarter and chocolatey</b>
 
 # Installation
 Just run the following from powershell command line
